@@ -1,15 +1,20 @@
 from flask import Flask, render_template
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
 # MySQL connection
 def get_db_connection():
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="brucewayne@1125",
-        database="aiinventorysystem",
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        database=os.getenv("DB_NAME"),
         auth_plugin='mysql_native_password'
     )
     return conn
