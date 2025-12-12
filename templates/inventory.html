@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Table</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylestable.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Inventory</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Product_Id</th>
+                    <th>Name</th>
+                    <th>Stock</th>
+                    <th>Safety_Stock</th>
+                    <th>Lead_Time_Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for row in table %}
+                    <tr>
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.product_id }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.stock }}</td>
+                        <td>{{ row.safety_stock }}</td>
+                        <td>{{ row.lead_time_days }}</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
