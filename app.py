@@ -34,6 +34,7 @@ def inventory():
                i.stock, i.safety_stock, i.lead_time_days
         FROM inventory i
         JOIN products p ON i.product_id = p.product_id
+        Order By i.id
     """)
 
     data = cursor.fetchall()
@@ -48,10 +49,10 @@ def sales():
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("""
-        SELECT s.id, s.product_id, p.name,
+        SELECT  s.transaction_id,s.product_id, p.name,
                s.quantity, s.sold_at
         FROM sales s
-        JOIN products p ON s.product_id = p.product_id
+        JOIN products p ON s.product_id = p.product_id order by s.transaction_id,s.sold_at,s.product_id
     """)
 
     data = cursor.fetchall()
