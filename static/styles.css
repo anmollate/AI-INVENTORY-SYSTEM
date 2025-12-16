@@ -18,6 +18,14 @@ h1 {
     font-size: 32px;
 }
 
+h2{
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
+    text-align: center;
+
+}
+
 /* Button layout */
 .button-group {
     display: flex;

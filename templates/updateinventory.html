@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesform.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Enter Inventory Details</h2>
+
+    <form action="/submitinv" method="post" class="form-box">
+        <div class="form-row">
+            <label>Product Name</label>
+            <input type="text" name="pname" required>
+        </div>
+        <div class="form-row">
+            <label>Updated Stock</label>
+            <input type="number" name="upstock" required>
+        </div>
+
+<!-- take input for product_id for sales using sql query -->
+
+        <button type="submit" class="btn">Save</button>
+    </form>
+</div>
+
+
+</body>
+</html>

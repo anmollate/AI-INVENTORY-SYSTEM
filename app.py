@@ -116,6 +116,30 @@ def lowstocklog():
 
     return render_template('lowstocklog.html', table=data)
 
+@app.route('/submitinv',methods=['POST'])
+def submitinv():
+    product=request.form['pname']
+    get_stock=int(request.form['upstock'])
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("Select product_id from products where name=%s",(product,))
+    pid=cursor.fetchone()['product_id']
+    cursor.execute('Select stock from inventory where product_id=%s',(pid,))
+    stock=cursor.fetchone()['stock']
+    up_stock=stock+get_stock
+    cursor.execute('Update Inventory set stock=%s where product_id=%s',(up_stock,pid))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect('/updateinventory')
+
+@app.route('/updateinventory')
+def updateinventory():
+    return render_template('updateinventory.html')
+
+
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
