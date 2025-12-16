@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesform.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Add Details For New Product</h2>
+
+    <form action="/submitprod" method="post" class="form-box">
+        <div class="form-row">
+            <label>Product Id</label>
+            <input type="number" name="pid" value="{{pid}}" readonly>
+        </div>
+        <div class="form-row">
+            <label>Product Name</label>
+            <input type="text" name="pname" required>
+        </div>
+        <div class="form-row">
+            <label>Price</label>
+            <input type="number" name="price" required>
+        </div>
+        <div class="form-row">
+            <label>Stock</label>
+            <input type="number" name="stock" required>
+        </div>
+        <div class="form-row">
+            <label>Safety Stock</label>
+            <input type="number" name="safetystock" required>
+        </div>
+        <div class="form-row">
+            <label>Lead Time Days</label>
+            <input type="number" name="leadtimedays" required>
+        </div>
+
+
+<!-- take input for product_id for sales using sql query -->
+
+        <button type="submit" class="btn">Save</button>
+    </form>
+</div>
+
+
+<script>
+    document.getElementById("date").value =
+    new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>

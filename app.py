@@ -138,6 +138,33 @@ def submitinv():
 def updateinventory():
     return render_template('updateinventory.html')
 
+@app.route('/addproduct')
+def addproduct():
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute('Select COALESCE(max(product_id),0)+1 as pid from products')
+    pid=cursor.fetchone()['pid']
+    cursor.close()
+    conn.close()
+    return render_template('addproduct.html',pid=pid)
+
+@app.route('/submitprod',methods=['POST'])
+def submitprod():
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    pid=request.form['pid']
+    pname=request.form['pname']
+    price=request.form['price']
+    stock=request.form['stock']
+    safetystock=request.form['safetystock']
+    ltd=request.form['leadtimedays'] 
+    cursor.execute('insert into products(name,price) values(%s,%s)',(pname,price))
+    conn.commit()
+    cursor.execute('insert into inventory(product_id,stock,safety_stock,lead_time_days) values(%s,%s,%s,%s)',(pid,stock,safetystock,ltd))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect('/addproduct')
 
 
 if __name__ == '__main__':
