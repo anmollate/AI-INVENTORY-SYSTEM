@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -23,6 +24,17 @@ def get_db_connection():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/addsales')
+def addsales():
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("""Select COALESCE(max(transaction_id),0)+1 as nextid from sales""")
+    next_id=cursor.fetchone()['nextid'] 
+    # ['nextid'] because it .fetchone() returns a dict-> {'nextid':101}
+    cursor.close()
+    conn.close()
+    return render_template('addsales.html',next_id=next_id)
 
 @app.route('/inventory')
 def inventory():
@@ -60,6 +72,23 @@ def sales():
     conn.close()
 
     return render_template('sales.html', table=data)
+
+@app.route('/submit',methods=['POST'])
+def submit():
+    t_id=request.form['tid']
+    product=request.form['pname']
+    sold_at=request.form['date']
+    qty=request.form['qty']
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("""Select product_id from products where name=%s""",(product,))
+    pid=cursor.fetchone()['product_id']
+    # print(result)
+    cursor.execute("Insert Into sales(transaction_id,product,quantity,sold_at,product_id) values(%s,%s,%s,%s,%s)",(t_id,product,qty,sold_at,pid))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect('/addsales')
 
 @app.route('/products')
 def products():

@@ -54,3 +54,14 @@ h1 {
 .btn1:hover {
     background-color: #0056b3;
 }
+
+.button-group2 {
+    display: flex;
+    flex-direction: column;   /* one after the other */
+    align-items: flex-start;  /* left */
+    justify-content: flex-start;
+    gap: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
