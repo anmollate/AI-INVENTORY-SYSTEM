@@ -8,8 +8,24 @@ body {
 /* Keep everything aligned to the top */
 .container {
     width: 100%;
-    padding-top: 40px;   /* small space from top */
+    padding-top: 10px;   /* small space from top */
     text-align: center;
+}
+
+.analysis1{
+    width: 490px;
+    height: 300px;
+    background-color: #CECECE;
+    /* margin-left: 10px; */
+    border-radius: 5px;
+    
+}
+
+.dashboardr1{
+    display:flex;
+    gap:10px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 h1 {
@@ -25,6 +41,10 @@ h2{
     text-align: center;
 
 }
+h3{
+    margin-left:10px;
+
+}
 
 /* Button layout */
 .button-group {
@@ -32,6 +52,14 @@ h2{
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
+}
+
+.button-group2 {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+ 
 }
 
 /* Button styling */
@@ -63,13 +91,4 @@ h2{
     background-color: #0056b3;
 }
 
-.button-group2 {
-    display: flex;
-    flex-direction: column;   /* one after the other */
-    align-items: flex-start;  /* left */
-    justify-content: flex-start;
-    gap: 0px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
+
