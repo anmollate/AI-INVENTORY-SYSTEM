@@ -28,7 +28,14 @@
     <h2>Sales Trends And Analysis</h2>
     <div class="dashboardr1">
     <div class="analysis1"> 
-        <h3>Top Selling Products</h3>  
+        <div class="topsellingprods" id="topchart">
+            <!-- <ul>
+             {% for row in top_products %}
+             <li>{{ row.product }}{{"   "}}{{row.totalsold}}</li>
+             {% endfor %}
+            </ul> -->
+            {{ plot_div | safe }}
+        </div>  
     </div>
     <div class="analysis1">
         <h3>Top Sellling Accessories</h3>
@@ -44,6 +51,11 @@
     </div>
     <div class="analysis1">
         <h3>Least Selling Products</h3>
+        <ul>
+            {% for row in least_prods %}
+            <li>{{ row.product }}</li>
+            {% endfor %}
+        </ul>
     </div>
 
     </div>

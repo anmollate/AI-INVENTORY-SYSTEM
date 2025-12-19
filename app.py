@@ -3,6 +3,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
+import plotly.express as px
 
 
 # Load environment variables from .env file
@@ -23,7 +24,29 @@ def get_db_connection():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute('select product, sum(quantity) as totalsold from sales group by product order by totalsold DESC limit 10')
+    result=cursor.fetchall()
+    products=[row['product'] for row in result]
+    values=[row['totalsold'] for row in result]
+
+    #plotting graph for top selling products
+    fig=px.bar(
+        x=products,
+        y=values,
+        labels={'x':'Products','y':'Quantity Sold'},
+        title='Top Selling Products',
+        color=values,
+        color_continuous_scale=['yellow','green']
+    )
+    plot_div=fig.to_html(full_html=False)
+
+    # print(result)
+    cursor.execute('select product from sales group by product order by sum(quantity) limit 10')
+    result1=cursor.fetchall()
+    
+    return render_template('index.html',plot_div=plot_div,least_prods=result1)
 
 @app.route('/addsales')
 def addsales():
