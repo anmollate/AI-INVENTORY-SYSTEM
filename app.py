@@ -26,11 +26,11 @@ def get_db_connection():
 def index():
     conn=get_db_connection()
     cursor=conn.cursor(cursor_factory=RealDictCursor)
+    #getting the names and quantity for top selling products
     cursor.execute('select product, sum(quantity) as totalsold from sales group by product order by totalsold DESC limit 10')
     result=cursor.fetchall()
     products=[row['product'] for row in result]
     values=[row['totalsold'] for row in result]
-
     #plotting graph for top selling products
     fig=px.bar(
         x=products,
@@ -42,11 +42,22 @@ def index():
     )
     plot_div=fig.to_html(full_html=False)
 
-    # print(result)
-    cursor.execute('select product from sales group by product order by sum(quantity) limit 10')
+    #getting the name and quantity for least selling products
+    cursor.execute('select product,sum(quantity) as tqty from sales group by product order by tqty limit 10')
     result1=cursor.fetchall()
-    
-    return render_template('index.html',plot_div=plot_div,least_prods=result1)
+    lproducts=[row['product'] for row in result1]
+    lqty=[row['tqty'] for row in result1]
+    #plotting the graph for least selling products
+    fig1=px.bar(
+        x=lproducts,
+        y=lqty,
+        labels={'x':'Products','y':'Quantity'},
+        title='Least Selling Products',
+        color=lqty,
+        color_continuous_scale=['red','yellow']
+    )
+    lplot_div=fig1.to_html(full_html=False)
+    return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div)
 
 @app.route('/addsales')
 def addsales():
