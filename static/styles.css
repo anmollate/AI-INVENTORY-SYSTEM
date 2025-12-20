@@ -20,6 +20,14 @@ body {
     border-radius: 5px;
     
 }
+.analysis2{
+    width: 980px;
+    height: 450px;
+    background-color: #CECECE;
+    /* margin-left: 10px; */
+    border-radius: 5px;
+    
+}
 
 .dashboardr1{
     display:flex;

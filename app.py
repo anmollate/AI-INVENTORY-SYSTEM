@@ -4,6 +4,8 @@ from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
 import plotly.express as px
+import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
 
 
 # Load environment variables from .env file
@@ -57,7 +59,57 @@ def index():
         color_continuous_scale=['red','yellow']
     )
     lplot_div=fig1.to_html(full_html=False)
-    return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div)
+
+    #apriori algo top selling combos
+    query = """
+    SELECT transaction_id, product
+    FROM sales
+    ORDER BY transaction_id
+    """
+
+    df = pd.read_sql(query, conn)
+    conn.close()
+
+    # Prepare basket
+    basket = df.pivot_table(
+        index='transaction_id',
+        columns='product',
+        aggfunc='size',
+        fill_value=0
+    )
+    basket = (basket > 0).astype(bool)
+
+    # Frequent itemsets & rules
+    freq_items = apriori(basket, min_support=0.005, use_colnames=True)
+    rules = association_rules(freq_items, metric="confidence", min_threshold=0.6)
+    rules = rules[rules['lift'] > 1]
+
+    # Keep only one direction
+    rules['pair'] = rules.apply(lambda x: frozenset(x['antecedents'] | x['consequents']), axis=1)
+    rules = rules.sort_values('confidence', ascending=False).drop_duplicates(subset='pair')
+
+    # Convert frozensets to strings
+    rules['antecedent'] = rules['antecedents'].apply(lambda x: list(x)[0])
+    rules['consequent'] = rules['consequents'].apply(lambda x: list(x)[0])
+
+    # Create matrix
+    heatmap_data = rules.pivot(index='antecedent', columns='consequent', values='confidence').fillna(0)
+
+    # Plotly Heatmap
+    fig2 = px.imshow(
+        heatmap_data,
+        text_auto=True,
+        aspect="auto",
+        color_continuous_scale=['#fcfc04', '#088404'],  # yellow to green
+        labels=dict(x="Consequent", y="Antecedent", color="Confidence"),
+        title="Product Association Heatmap (Confidence ≥ 60%)"
+    )
+
+    fig2.update_xaxes(side="bottom")
+    # fig2.show()
+    plot_tsc=fig2.to_html(full_html=False) #tsc=top selling combos
+
+    return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div,plot_tsc=plot_tsc)
 
 @app.route('/addsales')
 def addsales():
