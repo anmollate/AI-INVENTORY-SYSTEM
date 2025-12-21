@@ -44,6 +44,8 @@ def index():
     )
     plot_div=fig.to_html(full_html=False)
 
+
+
     #getting the name and quantity for least selling products
     cursor.execute('select product,sum(quantity) as tqty from sales group by product order by tqty limit 10')
     result1=cursor.fetchall()
@@ -60,6 +62,8 @@ def index():
     )
     lplot_div=fig1.to_html(full_html=False)
 
+
+
     #apriori algo top selling combos
     query = """
     SELECT transaction_id, product
@@ -68,7 +72,6 @@ def index():
     """
 
     df = pd.read_sql(query, conn)
-    conn.close()
 
     # Prepare basket
     basket = df.pivot_table(
@@ -109,7 +112,24 @@ def index():
     # fig2.show()
     plot_tsc=fig2.to_html(full_html=False) #tsc=top selling combos
 
-    return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div,plot_tsc=plot_tsc)
+
+    # Top 10 High Impact Products By Revenue
+    cursor.execute('select product, sum(quantity*price) as total_price from sales as s join products as p on s.product_id=p.product_id group by product order by total_price DESC limit 10')
+    result_r=cursor.fetchall()
+    product=[row['product'] for row in result_r]
+    revenue=[row['total_price'] for row in result_r]
+    fig3=px.bar(
+        x=product,
+        y=revenue,
+        labels={'x':'Products','y':'Total Revenue'},
+        title="Top 10 High Impact Products (By Revenue)",
+        color=revenue,
+        color_continuous_scale=['yellow','green']
+    )
+    plot_HIPR=fig3.to_html(full_html=False)
+
+
+    return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div,plot_tsc=plot_tsc,plot_HIPR=plot_HIPR)
 
 @app.route('/addsales')
 def addsales():
