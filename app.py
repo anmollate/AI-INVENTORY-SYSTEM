@@ -12,7 +12,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 load_dotenv()
 
 app = Flask(__name__)
-DATABASE_URL = os.environ.get("DATABASE_URL")
+
 # PostgreSQL connection
 # def get_db_connection():
 #     conn = psycopg2.connect(
@@ -24,10 +24,10 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 #     )
 #     return conn
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
 def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
     return conn
-
 
 @app.route('/')
 def index():
