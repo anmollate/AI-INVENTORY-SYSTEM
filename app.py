@@ -133,8 +133,24 @@ def index():
     )
     plot_HIPR=fig3.to_html(full_html=False)
 
+    # Number Of Daily Transactions
+    cursor.execute('select count(distinct transaction_id) as dailytrans from sales where sold_at=CURRENT_DATE')
+    dailytrans=cursor.fetchone()['dailytrans']
 
-    return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div,plot_tsc=plot_tsc,plot_HIPR=plot_HIPR)
+    #Number Of Monthly Transactions
+    cursor.execute("select count(distinct transaction_id) as mtrans from sales where DATE_TRUNC('month',sold_at)=DATE_TRUNC('month',CURRENT_DATE) and DATE_TRUNC('year',sold_at)=DATE_TRUNC('year',CURRENT_DATE)")
+    monthlytrans=cursor.fetchone()['mtrans']
+
+    #Today's Sales Volume
+    cursor.execute("select sum(quantity) as tqty from sales where sold_at=Current_date")
+    tqty=cursor.fetchone()['tqty']
+
+    #Today's Revenue
+    cursor.execute("select sum(s.quantity*p.price) as revenue from sales as s join products as p on s.product_id=p.product_id where s.sold_at=current_date ")
+    trevenue=cursor.fetchone()['revenue']
+
+
+    return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div,plot_tsc=plot_tsc,plot_HIPR=plot_HIPR,dailytrans=dailytrans,monthlytrans=monthlytrans,tqty=tqty,trevenue=trevenue)
 
 @app.route('/addsales')
 def addsales():
