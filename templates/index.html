@@ -24,28 +24,45 @@
     </div>
     <h2>Sales Trends And Analysis</h2>
     <div class="dashboardr1">
+
+    <div class="analysis">
+        <h2>Daily Transactions</h2>
+        <div class="dailytrans">{{dailytrans}}</div>
+    </div>
+
+    <div class="analysis">
+        <h2>Monthly Transactions</h2>
+        <div class="dailytrans">{{monthlytrans}}</div>
+    </div>
+
+    <div class="analysis">
+        <h2>Today’s Sales Volume</h2>
+        <div class="dailytrans">{{tqty}}<p>&nbsp;Units</p></div>
+    </div>
+
+    <div class="analysis">
+        <h2>Today’s Sales Revenue</h2>
+        <div class="dailytrans"><p>₹</p>{{trevenue}}<p> /-</p></div>
+    </div>
+    
     <div class="analysis1"> 
         <div class="topsellingprods" id="topchart">
             {{ plot_div | safe }}
         </div>  
     </div>
-    <div class="analysis2">
-        <!-- <h3>Top Selling Combos</h3> -->
-         {{plot_tsc | safe}}
-    </div>
-    <div class="analysis1">
-        {{lplot_div | safe}}
-    </div>
-    <!-- <div class="analysis1">
-        <h3>Top Sellling Accessories</h3>
-    </div> -->
 
-    <div class="analysis1">
-        <h3>Store Layout Optimization</h3>
-    </div>
     <div class="analysis1">
         <!-- <h3>Top 10 High Impact Products(By Revenue)</h3> -->
         {{plot_HIPR | safe}}
+    </div>
+
+    <div class="analysis1">
+        {{lplot_div | safe}}
+    </div>
+   
+    <div class="analysis2">
+        <!-- <h3>Top Selling Combos</h3> -->
+         {{plot_tsc | safe}}
     </div>
 
 

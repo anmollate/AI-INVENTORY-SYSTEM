@@ -18,10 +18,24 @@ body {
     background-color: #CECECE;
     /* margin-left: 10px; */
     border-radius: 5px;
-    
+    justify-content: center;
+    text-align: center;  
+    align-items: center;
 }
+
+.analysis{
+    width: 365px;
+    height: 365px;
+    background-color: white;
+    /* margin-left: 10px; */
+    border-radius: 5px;
+    justify-content: center;
+    text-align: center;  
+    align-items: center;
+}
+
 .analysis2{
-    width: 980px;
+    width: 1490px;
     height: 450px;
     background-color: #CECECE;
     /* margin-left: 10px; */
@@ -97,6 +111,22 @@ h3{
 }
 .btn1:hover {
     background-color: #0056b3;
+}
+
+.dailytrans
+{
+    width: 220px;
+    height: 220px;
+    background-color: #2ecc71; /* green */
+    color: #ffffff;            /* white text */
+    border-radius: 50%;        /* circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-left: 70px;
+    margin-top: 30px;
 }
 
 
