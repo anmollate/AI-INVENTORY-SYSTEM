@@ -13,31 +13,48 @@
     <form action="/submit" method="post" class="form-box">
         <div class="form-row">
             <label>Transaction ID</label>
-            <input type="number" name="tid" value="{{next_id}}" readonly>
+            <input type="number" name="tid" value="{{ next_id }}" readonly>
         </div>
-        <div class="form-row">
-            <label>Product Name</label>
-            <input type="text" name="pname" required>
-        </div>
-        <div class="form-row">
-            <label>Quantity</label>
-            <input type="number" name="qty" required>
-        </div>
+
         <div class="form-row">
             <label>Date</label>
             <input type="date" name="date" id="date" required>
         </div>
 
-<!-- take input for product_id for sales using sql query -->
+        <div id="product-container">
+            <div class="form-row product-row">
+                <label>Product Name</label>
+                <input type="text" name="pname[]" required>
 
+                <label>Quantity</label>
+                <input type="number" name="qty[]" required>
+            </div>
+        </div>
+
+        <button type="button" class="btn" onclick="addProduct()">Add Product</button>
         <button type="submit" class="btn">Save</button>
     </form>
 </div>
 
-
 <script>
     document.getElementById("date").value =
-    new Date().toISOString().split('T')[0];
+        new Date().toISOString().split('T')[0];
+
+    function addProduct() {
+        const container = document.getElementById("product-container");
+
+        const div = document.createElement("div");
+        div.className = "form-row product-row";
+        div.innerHTML = `
+            <label>Product Name</label>
+            <input type="text" name="pname[]" required>
+
+            <label>Quantity</label>
+            <input type="number" name="qty[]" required>
+        `;
+        container.appendChild(div);
+    }
 </script>
+
 </body>
 </html>

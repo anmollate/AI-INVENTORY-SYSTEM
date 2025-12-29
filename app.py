@@ -14,20 +14,20 @@ load_dotenv()
 app = Flask(__name__)
 
 # PostgreSQL connection
-# def get_db_connection():
-#     conn = psycopg2.connect(
-#         host=os.getenv("DB_HOST"),
-#         database=os.getenv("DB_NAME"),
-#         user=os.getenv("DB_USER"),
-#         password=os.getenv("DB_PASS"),
-#         port=os.getenv("DB_PORT", 5432)
-#     )
-#     return conn
-
-DATABASE_URL = os.environ.get("DATABASE_URL")
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+    conn = psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        port=os.getenv("DB_PORT", 5432)
+    )
     return conn
+
+# DATABASE_URL = os.environ.get("DATABASE_URL")
+# def get_db_connection():
+#     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+#     return conn
 
 @app.route('/')
 def index():
@@ -152,6 +152,7 @@ def index():
 
     return render_template('index.html',plot_div=plot_div,lplot_div=lplot_div,plot_tsc=plot_tsc,plot_HIPR=plot_HIPR,dailytrans=dailytrans,monthlytrans=monthlytrans,tqty=tqty,trevenue=trevenue)
 
+#Route To The Add Sales Page
 @app.route('/addsales')
 def addsales():
     conn=get_db_connection()
@@ -200,22 +201,38 @@ def sales():
 
     return render_template('sales.html', table=data)
 
-@app.route('/submit',methods=['POST'])
+#Inserting The Sales Data Inside The Table
+@app.route('/submit', methods=['POST'])
 def submit():
-    t_id=request.form['tid']
-    product=request.form['pname']
-    sold_at=request.form['date']
-    qty=request.form['qty']
-    conn=get_db_connection()
-    cursor=conn.cursor(cursor_factory=RealDictCursor)
-    cursor.execute("""Select product_id from products where name=%s""",(product,))
-    pid=cursor.fetchone()['product_id']
-    # print(result)
-    cursor.execute("Insert Into sales(transaction_id,product,quantity,sold_at,product_id) values(%s,%s,%s,%s,%s)",(t_id,product,qty,sold_at,pid))
+    t_id = request.form['tid']
+    sold_at = request.form['date']
+    # these now come as lists
+    products = request.form.getlist('pname[]')
+    quantities = request.form.getlist('qty[]')
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    for product, qty in zip(products, quantities):
+        cursor.execute(
+            "SELECT product_id FROM products WHERE name = %s",
+            (product,)
+        )
+        pid = cursor.fetchone()['product_id']
+
+        cursor.execute(
+            """
+            INSERT INTO sales
+            (transaction_id, product, quantity, sold_at, product_id)
+            VALUES (%s, %s, %s, %s, %s)
+            """,
+            (t_id, product, qty, sold_at, pid)
+        )
+
     conn.commit()
     cursor.close()
     conn.close()
     return redirect('/addsales')
+
 
 @app.route('/products')
 def products():
