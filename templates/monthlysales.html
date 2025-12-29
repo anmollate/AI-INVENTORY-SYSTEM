@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Sales</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesform.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Enter The Month & Year</h2>
+
+    <form action="/submitmnt" method="post" class="form-box">
+        <div class="form-row">
+            <label>Month</label>
+            <input type="month" name="month" required>
+        </div>
+
+<!-- take input for product_id for sales using sql query -->
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+
+
+</body>
+</html>

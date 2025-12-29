@@ -84,6 +84,15 @@ h3{
  
 }
 
+.button-group3
+{
+    position: absolute;
+    top: 20px;      /* space from top */
+    right: 20px;    /* space from right */
+    
+
+}
+
 /* Button styling */
 .btn {
     text-decoration: none;

@@ -14,20 +14,20 @@ load_dotenv()
 app = Flask(__name__)
 
 # PostgreSQL connection
-# def get_db_connection():
-#     conn = psycopg2.connect(
-#         host=os.getenv("DB_HOST"),
-#         database=os.getenv("DB_NAME"),
-#         user=os.getenv("DB_USER"),
-#         password=os.getenv("DB_PASS"),
-#         port=os.getenv("DB_PORT", 5432)
-#     )
-#     return conn
-
-DATABASE_URL = os.environ.get("DATABASE_URL")
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+    conn = psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        port=os.getenv("DB_PORT", 5432)
+    )
     return conn
+
+# DATABASE_URL = os.environ.get("DATABASE_URL")
+# def get_db_connection():
+#     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+#     return conn
 
 @app.route('/')
 def index():
@@ -163,6 +163,12 @@ def addsales():
     cursor.close()
     conn.close()
     return render_template('addsales.html',next_id=next_id)
+
+@app.route('/monthlysales')
+def monthlysales():
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    return render_template('monthlysales.html')
 
 @app.route('/inventory')
 def inventory():
