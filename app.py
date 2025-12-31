@@ -15,21 +15,21 @@ load_dotenv()
 app = Flask(__name__)
 
 # Local PostgreSQL connection
-def get_db_connection():
-    conn = psycopg2.connect(
-        host=os.getenv("DB_HOST"),
-        database=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASS"),
-        port=os.getenv("DB_PORT", 5432)
-    )
-    return conn
-
-#Render DB Connection
-# DATABASE_URL = os.environ.get("DATABASE_URL")
 # def get_db_connection():
-#     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+#     conn = psycopg2.connect(
+#         host=os.getenv("DB_HOST"),
+#         database=os.getenv("DB_NAME"),
+#         user=os.getenv("DB_USER"),
+#         password=os.getenv("DB_PASS"),
+#         port=os.getenv("DB_PORT", 5432)
+#     )
 #     return conn
+
+# Render DB Connection
+DATABASE_URL = os.environ.get("DATABASE_URL")
+def get_db_connection():
+    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+    return conn
 
 @app.route('/')
 def index():
