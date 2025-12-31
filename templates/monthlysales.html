@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Monthly Sales</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesform.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylestable.css') }}">
 </head>
 <body>
 
@@ -21,6 +22,32 @@
         <button type="submit" class="btn">Submit</button>
     </form>
 </div>
+
+   <div class="container">
+        <h2>MONTHLY SALES</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Transaction_Id</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Sold_at</th>
+                    <th>Product_Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table %}
+                <tr>
+                    <td>{{ row.transaction_id }}</td>
+                    <td>{{ row.product }}</td>
+                    <td>{{ row.quantity }}</td>
+                    <td>{{ row.sold_at }}</td>
+                    <td>{{ row.product_id}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 
 </body>

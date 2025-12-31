@@ -14,20 +14,21 @@ load_dotenv()
 app = Flask(__name__)
 
 # PostgreSQL connection
-def get_db_connection():
-    conn = psycopg2.connect(
-        host=os.getenv("DB_HOST"),
-        database=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASS"),
-        port=os.getenv("DB_PORT", 5432)
-    )
-    return conn
-
-# DATABASE_URL = os.environ.get("DATABASE_URL")
 # def get_db_connection():
-#     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+#     conn = psycopg2.connect(
+#         host=os.getenv("DB_HOST"),
+#         database=os.getenv("DB_NAME"),
+#         user=os.getenv("DB_USER"),
+#         password=os.getenv("DB_PASS"),
+#         port=os.getenv("DB_PORT", 5432)
+#     )
 #     return conn
+
+#Render DB Connection
+DATABASE_URL = os.environ.get("DATABASE_URL")
+def get_db_connection():
+    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+    return conn
 
 @app.route('/')
 def index():
@@ -283,6 +284,22 @@ def submitinv():
     conn.close()
 
     return redirect('/updateinventory')
+
+#Monthly Transactions Filter
+@app.route('/submitmnt',methods=['POST'])
+def submitmnt():
+    result=request.form['month']
+    year=int(result.split('-')[0])
+    month=int(result.split('-')[1])
+    print(year,month)
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute('Select * from sales where EXTRACT(MONTH From sold_at)=%s and EXTRACT(YEAR From sold_at)=%s',(month,year))
+    data=cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return render_template('monthlysales.html',table=data)
 
 @app.route('/updateinventory')
 def updateinventory():
