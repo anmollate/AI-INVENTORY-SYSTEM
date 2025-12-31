@@ -4,5 +4,4 @@ dotenv
 plotly
 pandas
 mlxtend
-io
 gunicorn
