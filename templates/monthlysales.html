@@ -23,7 +23,7 @@
     </form>
 </div>
 
-   <div class="container">
+   <div class="container" id="resultSection" style="display:none;">
         <h2>MONTHLY SALES</h2>
         <table class="table">
             <thead>
@@ -47,8 +47,19 @@
                 {% endfor %}
             </tbody>
         </table>
+        <a href='/download?month={{ month }}' class="btn" >DOWNLOAD</a>
     </div>
+<script>
+    window.onload = function () {
+        // table_data_length is passed from backend
+        const hasData = {{ table|length if table else 0 }};
 
+        if (hasData > 0) {
+            document.getElementById("resultSection").style.display = "block";
+        }
+    };
+</script>
 
+    
 </body>
 </html>

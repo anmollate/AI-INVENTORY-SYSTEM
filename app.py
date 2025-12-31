@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_file
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
@@ -6,6 +6,7 @@ import os
 import plotly.express as px
 import pandas as pd
 from mlxtend.frequent_patterns import apriori, association_rules
+import io
 
 
 # Load environment variables from .env file
@@ -13,22 +14,22 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# PostgreSQL connection
-# def get_db_connection():
-#     conn = psycopg2.connect(
-#         host=os.getenv("DB_HOST"),
-#         database=os.getenv("DB_NAME"),
-#         user=os.getenv("DB_USER"),
-#         password=os.getenv("DB_PASS"),
-#         port=os.getenv("DB_PORT", 5432)
-#     )
-#     return conn
+# Local PostgreSQL connection
+def get_db_connection():
+    conn = psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        port=os.getenv("DB_PORT", 5432)
+    )
+    return conn
 
 #Render DB Connection
-DATABASE_URL = os.environ.get("DATABASE_URL")
-def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
-    return conn
+# DATABASE_URL = os.environ.get("DATABASE_URL")
+# def get_db_connection():
+#     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+#     return conn
 
 @app.route('/')
 def index():
@@ -295,11 +296,34 @@ def submitmnt():
     conn=get_db_connection()
     cursor=conn.cursor(cursor_factory=RealDictCursor)
     cursor.execute('Select * from sales where EXTRACT(MONTH From sold_at)=%s and EXTRACT(YEAR From sold_at)=%s',(month,year))
-    data=cursor.fetchall()
+    datat=cursor.fetchall()
     cursor.close()
     conn.close()
+    return render_template('monthlysales.html',table=datat,month=result)
 
-    return render_template('monthlysales.html',table=data)
+@app.route('/download')
+def download():
+    date=request.args.get('month')
+    # print(date) debug
+    conn=get_db_connection()
+    cursor=conn.cursor(cursor_factory=RealDictCursor)
+    year=date.split('-')[0]
+    month=date.split('-')[1]
+    cursor.execute('Select * from sales where EXTRACT(MONTH From sold_at)=%s and EXTRACT(YEAR From sold_at)=%s',(month,year))
+    result=cursor.fetchall()
+    df=pd.DataFrame(result)
+    output = io.StringIO()
+    df.to_csv(output, index=False)
+    output.seek(0)
+
+    return send_file(
+        io.BytesIO(output.getvalue().encode()),
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f'monthly_sales_{month}.csv'
+    )
+    
+
 
 @app.route('/updateinventory')
 def updateinventory():
