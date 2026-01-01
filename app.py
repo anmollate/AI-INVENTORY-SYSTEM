@@ -15,21 +15,21 @@ load_dotenv()
 app = Flask(__name__)
 
 # Local PostgreSQL connection
-# def get_db_connection():
-#     conn = psycopg2.connect(
-#         host=os.getenv("DB_HOST"),
-#         database=os.getenv("DB_NAME"),
-#         user=os.getenv("DB_USER"),
-#         password=os.getenv("DB_PASS"),
-#         port=os.getenv("DB_PORT", 5432)
-#     )
-#     return conn
+def get_db_connection():
+    conn = psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        port=os.getenv("DB_PORT", 5432)
+    )
+    return conn
 
 # Render DB Connection
-DATABASE_URL = os.environ.get("DATABASE_URL")
-def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
-    return conn
+# DATABASE_URL = os.environ.get("DATABASE_URL")
+# def get_db_connection():
+#     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+#     return conn
 
 @app.route('/')
 def index():
@@ -268,6 +268,7 @@ def lowstocklog():
 
     return render_template('lowstocklog.html', table=data)
 
+#invetory update submit
 @app.route('/submitinv',methods=['POST'])
 def submitinv():
     product=request.form['pname']
@@ -292,15 +293,31 @@ def submitmnt():
     result=request.form['month']
     year=int(result.split('-')[0])
     month=int(result.split('-')[1])
-    print(year,month)
+    # print(year,month)
     conn=get_db_connection()
     cursor=conn.cursor(cursor_factory=RealDictCursor)
     cursor.execute('Select * from sales where EXTRACT(MONTH From sold_at)=%s and EXTRACT(YEAR From sold_at)=%s',(month,year))
     datat=cursor.fetchall()
+    cursor.execute('Select product,sum(quantity) as quantity from sales where EXTRACT(MONTH From sold_at)=%s and EXTRACT(YEAR From sold_at)=%s group by product order by quantity DESC ',(month,year))
+    data=cursor.fetchall()
+    products=[row['product'] for row in data]
+    quantity=[row['quantity'] for row in data]
+    fig=px.bar(
+        x=products,
+        y=quantity,
+        labels={'x':'Products','y':'quantity'},
+        title="Top Selling Products-Monthly",
+        color=quantity,
+        color_continuous_scale=['yellow','green']
+    )
+    plot_TMSP=fig.to_html(full_html=False)
+    print(products)
+    print(quantity)
     cursor.close()
     conn.close()
-    return render_template('monthlysales.html',table=datat,month=result)
+    return render_template('monthlysales.html',table=datat,month=result,graph1=plot_TMSP)
 
+#Monthly Sales Download->CSV
 @app.route('/download')
 def download():
     date=request.args.get('month')
