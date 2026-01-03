@@ -54,7 +54,7 @@ updateinventory.html
 ## Installation & Setup
 
 1.  Clone the repository: git clone
-    https://github.com/your-username/AI-INVENTORY-SYSTEM.git\
+    https://github.com/anmollate/AI-INVENTORY-SYSTEM.git\
     cd AI-INVENTORY-SYSTEM
 
 2.  Install dependencies: pip install -r requirements.txt
