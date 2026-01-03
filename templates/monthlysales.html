@@ -5,6 +5,7 @@
     <title>Monthly Sales</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesform.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylestable.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 <a href="/" class="back">Back</a>
@@ -49,7 +50,27 @@
             </tbody>
         </table>
         <a href='/download?month={{ month }}' class="btn" >DOWNLOAD</a>
-        <div class="analysis">{{graph1 | safe}}</div>
+
+        <div class="analysis-row">
+
+            <div class="analysismnth">
+                <h2>Monthly Transactions</h2>
+                <div class="mnttrans">{{monthlytrans}}</div>
+            </div>
+
+            <div class="analysismnth">
+                <h2>Monthly Sales Volume</h2>
+                <div class="mnttrans">{{tqty}}<p>&nbsp;Units</p></div>
+            </div>
+
+            <div class="analysismnth">
+                <h2>Monthly Sales Revenue</h2>
+                <div class="mnttrans"><p>₹</p>{{trevenue}}<p> /-</p></div>
+            </div>
+
+        </div>
+
+        <div class="analysisgraph">{{graph1 | safe}}</div>
     </div>
 <script>
     window.onload = function () {

@@ -60,7 +60,7 @@ h2 {
     background-color: #0056b3;
 }
 
-.analysis {
+.analysisgraph {
     width: 365px;
     height: 365px;
     background-color: white;
@@ -88,4 +88,3 @@ h2 {
     margin-top: 20px;
     margin-left: 20px;
 }
-

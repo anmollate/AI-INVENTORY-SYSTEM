@@ -138,4 +138,42 @@ h3{
     margin-top: 30px;
 }
 
+.analysismnth{
+    width: 365px;
+    height: 365px;
+    background-color: white;
+    /* margin-left: 10px; */
+    border-radius: 5px;
+    justify-content: center;
+    text-align: center;  
+    align-items: center;
+}
+
+.analysis-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.mnttrans
+{
+    width: 220px;
+    height: 220px;
+    background-color: #2ecc71; /* green */
+    color: #ffffff;            /* white text */
+    border-radius: 50%;        /* circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-left: 17px;
+    margin-top: 30px;
+}
+
+
+
+
+
 

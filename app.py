@@ -311,11 +311,23 @@ def submitmnt():
         color_continuous_scale=['yellow','green']
     )
     plot_TMSP=fig.to_html(full_html=False)
-    print(products)
-    print(quantity)
+    # print(products)
+    # print(quantity)
+    cursor.execute('select COALESCE(count(distinct transaction_id),0) from sales where EXTRACT(MONTH from sold_at)=%s and EXTRACT(YEAR from sold_at)=%s',(month,year))
+    mnttrans=cursor.fetchone()['coalesce']
+    print(mnttrans)
+
+    cursor.execute('select COALESCE(sum(quantity),0) from sales where EXTRACT(MONTH from sold_at)=%s and EXTRACT(YEAR from sold_at)=%s',(month,year))
+    mntqty=cursor.fetchone()['coalesce']
+    print(mntqty)
+
+    cursor.execute('select COALESCE(sum(s.quantity*p.price),0) from sales as s join products as p on s.product_id=p.product_id where EXTRACT(MONTH from s.sold_at)=%s and EXTRACT(YEAR from s.sold_at)=%s',(month,year))
+    mntrev=cursor.fetchone()['coalesce']
+    print(mntrev)
+
     cursor.close()
     conn.close()
-    return render_template('monthlysales.html',table=datat,month=result,graph1=plot_TMSP)
+    return render_template('monthlysales.html',table=datat,month=result,graph1=plot_TMSP,monthlytrans=mnttrans,tqty=mntqty,trevenue=mntrev)
 
 #Monthly Sales Download->CSV
 @app.route('/download')
