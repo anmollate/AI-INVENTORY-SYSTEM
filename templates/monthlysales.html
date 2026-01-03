@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='stylestable.css') }}">
 </head>
 <body>
+<a href="/" class="back">Back</a>
 
 <div class="container">
     <h2>Enter The Month & Year</h2>
@@ -48,7 +49,7 @@
             </tbody>
         </table>
         <a href='/download?month={{ month }}' class="btn" >DOWNLOAD</a>
-        <div class="analysis1">{{graph1 | safe}}</div>
+        <div class="analysis">{{graph1 | safe}}</div>
     </div>
 <script>
     window.onload = function () {

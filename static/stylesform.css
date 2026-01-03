@@ -59,3 +59,33 @@ h2 {
 .btn:hover {
     background-color: #0056b3;
 }
+
+.analysis {
+    width: 365px;
+    height: 365px;
+    background-color: white;
+    border-radius: 5px;
+
+    /* center content inside */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    /* center the div on the page */
+    margin: auto;
+    margin-top: 60px;
+}
+
+.back {
+    display: inline-block;
+    position: relative;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
