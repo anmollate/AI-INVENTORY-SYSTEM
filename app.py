@@ -157,14 +157,7 @@ def index():
 #Route To The Add Sales Page
 @app.route('/addsales')
 def addsales():
-    conn=get_db_connection()
-    cursor=conn.cursor(cursor_factory=RealDictCursor)
-    cursor.execute("""Select COALESCE(max(transaction_id),0)+1 as nextid from sales""")
-    next_id=cursor.fetchone()['nextid'] 
-    # ['nextid'] because it .fetchone() returns a dict-> {'nextid':101}
-    cursor.close()
-    conn.close()
-    return render_template('addsales.html',next_id=next_id)
+    return render_template('addsales.html')
 
 @app.route('/monthlysales')
 def monthlysales():
@@ -212,13 +205,16 @@ def sales():
 #Inserting The Sales Data Inside The Table
 @app.route('/submit', methods=['POST'])
 def submit():
-    t_id = request.form['tid']
     sold_at = request.form['date']
     # these now come as lists
     products = request.form.getlist('pname[]')
     quantities = request.form.getlist('qty[]')
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    # Generate transaction_id at the moment of submission to avoid race conditions
+    cursor.execute("SELECT COALESCE(max(transaction_id), 0) + 1 as new_tid FROM sales")
+    t_id = cursor.fetchone()['new_tid']
 
     for product, qty in zip(products, quantities):
         cursor.execute(
@@ -360,26 +356,27 @@ def updateinventory():
 
 @app.route('/addproduct')
 def addproduct():
-    conn=get_db_connection()
-    cursor=conn.cursor(cursor_factory=RealDictCursor)
-    cursor.execute('Select COALESCE(max(product_id),0)+1 as pid from products')
-    pid=cursor.fetchone()['pid']
-    cursor.close()
-    conn.close()
-    return render_template('addproduct.html',pid=pid)
+    return render_template('addproduct.html')
 
 @app.route('/submitprod',methods=['POST'])
 def submitprod():
     conn=get_db_connection()
     cursor=conn.cursor(cursor_factory=RealDictCursor)
-    pid=request.form['pid']
     pname=request.form['pname']
     price=request.form['price']
     stock=request.form['stock']
     safetystock=request.form['safetystock']
     ltd=request.form['leadtimedays'] 
-    cursor.execute('insert into products(name,price) values(%s,%s)',(pname,price))
-    conn.commit()
+    
+    # Use RETURNING clause to get the auto-generated product_id
+    cursor.execute(
+        'INSERT INTO products(name, price) VALUES(%s, %s) RETURNING product_id',
+        (pname, price)
+    )
+    # Fetch the generated ID from the result
+    pid = cursor.fetchone()['product_id']
+    
+    # Use the retrieved pid for the inventory table
     cursor.execute('insert into inventory(product_id,stock,safety_stock,lead_time_days) values(%s,%s,%s,%s)',(pid,stock,safetystock,ltd))
     conn.commit()
     cursor.close()

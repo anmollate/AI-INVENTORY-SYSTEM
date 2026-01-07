@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Sales Entry</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesform.css') }}">
 </head>
+
 <body>
-<a href="/" class="back">Back</a>
+    <a href="/" class="back">Back</a>
 
-<div class="container">
-    <h2>Enter Sales Details</h2>
+    <div class="container">
+        <h2>Enter Sales Details</h2>
 
-    <form action="/submit" method="post" class="form-box">
-        <div class="form-row">
-            <label>Transaction ID</label>
-            <input type="number" name="tid" value="{{ next_id }}" readonly>
-        </div>
+        <form action="/submit" method="post" class="form-box">
 
-        <div class="form-row">
-            <label>Date</label>
-            <input type="date" name="date" id="date" required>
-        </div>
 
-        <div id="product-container">
-            <div class="form-row product-row">
-                <label>Product Name</label>
-                <input type="text" name="pname[]" required>
-
-                <label>Quantity</label>
-                <input type="number" name="qty[]" required>
+            <div class="form-row">
+                <label>Date</label>
+                <input type="date" name="date" id="date" required>
             </div>
-        </div>
 
-        <button type="button" class="btn" onclick="addProduct()">Add Product</button>
-        <button type="submit" class="btn">Save</button>
-    </form>
-</div>
+            <div id="product-container">
+                <div class="form-row product-row">
+                    <label>Product Name</label>
+                    <input type="text" name="pname[]" required>
 
-<script>
-    document.getElementById("date").value =
-        new Date().toISOString().split('T')[0];
+                    <label>Quantity</label>
+                    <input type="number" name="qty[]" required>
+                </div>
+            </div>
 
-    function addProduct() {
-        const container = document.getElementById("product-container");
+            <button type="button" class="btn" onclick="addProduct()">Add Product</button>
+            <button type="submit" class="btn">Save</button>
+        </form>
+    </div>
 
-        const div = document.createElement("div");
-        div.className = "form-row product-row";
-        div.innerHTML = `
+    <script>
+        document.getElementById("date").value =
+            new Date().toISOString().split('T')[0];
+
+        function addProduct() {
+            const container = document.getElementById("product-container");
+
+            const div = document.createElement("div");
+            div.className = "form-row product-row";
+            div.innerHTML = `
             <label>Product Name</label>
             <input type="text" name="pname[]" required>
 
             <label>Quantity</label>
             <input type="number" name="qty[]" required>
         `;
-        container.appendChild(div);
-    }
-</script>
+            container.appendChild(div);
+        }
+    </script>
 
 </body>
+
 </html>
