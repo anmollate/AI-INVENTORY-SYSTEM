@@ -1,72 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
-    
-    <div class="container">
-        <h1>Welcome to Inventory System</h1>
-        <div class="button-group3"><a href="/monthlysales" class="btn">Monthly Sales</a></div>
-        <div class="button-group">
-            <a href="/inventory" class="btn">Inventory</a>
-            <a href="/sales" class="btn">Sales</a>
-            <a href="/products" class="btn">Products</a>
-            <a href="/lowstocklog" class="btn">Low Stock Log</a>
+
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Welcome to Inventory System</h1>
+            <p>Efficiently manage your stock, sales, and analytics.</p>
         </div>
     </div>
-        <div class="button-group2">
-        <a href="/addproduct" class="btn1">Add Product</a>
-        <a href="/updateinventory" class="btn1">Update Inventory</a>
-        <a href="/addsales" class="btn1">Add Sales</a>
-    </div>
-    <h2>Sales Trends And Analysis</h2>
-    <div class="dashboardr1">
 
-    <div class="analysis">
-        <h2>Daily Transactions</h2>
-        <div class="dailytrans">{{dailytrans}}</div>
-    </div>
+    <div class="container">
+        <!-- Main Navigation Grid -->
+        <div class="nav-grid">
+            <a href="/inventory" class="nav-card">
+                <img src="{{ url_for('static', filename='images/icon_inventory.png') }}" alt="Inventory"
+                    class="nav-icon">
+                <span>Inventory</span>
+            </a>
+            <a href="/sales" class="nav-card">
+                <img src="{{ url_for('static', filename='images/icon_sales.png') }}" alt="Sales" class="nav-icon">
+                <span>Sales</span>
+            </a>
+            <a href="/products" class="nav-card">
+                <img src="{{ url_for('static', filename='images/icon_products.png') }}" alt="Products" class="nav-icon">
+                <span>Products</span>
+            </a>
+            <a href="/monthlysales" class="nav-card">
+                <img src="{{ url_for('static', filename='images/icon_analytics.png') }}" alt="Monthly Sales"
+                    class="nav-icon">
+                <span>Monthly Sales</span>
+            </a>
+            <a href="/lowstocklog" class="nav-card">
+                <img src="{{ url_for('static', filename='images/icon_analytics.png') }}" alt="Low Stock Log"
+                    class="nav-icon">
+                <span>Low Stock Log</span>
+            </a>
+        </div>
 
-    <div class="analysis">
-        <h2>Monthly Transactions</h2>
-        <div class="dailytrans">{{monthlytrans}}</div>
-    </div>
+        <!-- Action Buttons Grid -->
+        <div class="action-grid">
+            <a href="/addproduct" class="action-card">
+                <img src="{{ url_for('static', filename='images/icon_add.png') }}" alt="Add Product"
+                    class="action-icon">
+                <span>Add Product</span>
+            </a>
+            <a href="/updateinventory" class="action-card">
+                <img src="{{ url_for('static', filename='images/icon_add.png') }}" alt="Update Inventory"
+                    class="action-icon">
+                <span>Update Inventory</span>
+            </a>
+            <a href="/addsales" class="action-card">
+                <img src="{{ url_for('static', filename='images/icon_add.png') }}" alt="Add Sales" class="action-icon">
+                <span>Add Sales</span>
+            </a>
+        </div>
+        <h2>Sales Trends And Analysis</h2>
+        <div class="dashboardr1">
 
-    <div class="analysis">
-        <h2>Today’s Sales Volume</h2>
-        <div class="dailytrans">{{tqty}}<p>&nbsp;Units</p></div>
-    </div>
+            <div class="analysis">
+                <h2>Daily Transactions</h2>
+                <div class="dailytrans">{{dailytrans}}</div>
+            </div>
 
-    <div class="analysis">
-        <h2>Today’s Sales Revenue</h2>
-        <div class="dailytrans"><p>₹</p>{{trevenue}}<p> /-</p></div>
-    </div>
-    
-    <div class="analysis1"> 
-        <div class="topsellingprods" id="topchart">
-            {{ plot_div | safe }}
-        </div>  
-    </div>
+            <div class="analysis">
+                <h2>Monthly Transactions</h2>
+                <div class="dailytrans">{{monthlytrans}}</div>
+            </div>
 
-    <div class="analysis1">
-        <!-- <h3>Top 10 High Impact Products(By Revenue)</h3> -->
-        {{plot_HIPR | safe}}
-    </div>
+            <div class="analysis">
+                <h2>Today’s Sales Volume</h2>
+                <div class="dailytrans">{{tqty}}<p>&nbsp;Units</p>
+                </div>
+            </div>
 
-    <div class="analysis1">
-        {{lplot_div | safe}}
-    </div>
-   
-    <div class="analysis2">
-        <!-- <h3>Top Selling Combos</h3> -->
-         {{plot_tsc | safe}}
-    </div>
+            <div class="analysis">
+                <h2>Today’s Sales Revenue</h2>
+                <div class="dailytrans">
+                    <p>₹</p>{{trevenue}}<p> /-</p>
+                </div>
+            </div>
+
+            <div class="analysis1">
+                <div class="topsellingprods" id="topchart">
+                    {{ plot_div | safe }}
+                </div>
+            </div>
+
+            <div class="analysis1">
+                <!-- <h3>Top 10 High Impact Products(By Revenue)</h3> -->
+                {{plot_HIPR | safe}}
+            </div>
+
+            <div class="analysis1">
+                {{lplot_div | safe}}
+            </div>
+
+            <div class="analysis2">
+                <!-- <h3>Top Selling Combos</h3> -->
+                {{plot_tsc | safe}}
+            </div>
 
 
-    </div>
+        </div>
 </body>
+
 </html>
