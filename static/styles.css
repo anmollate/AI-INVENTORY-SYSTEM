@@ -8,22 +8,23 @@ body {
 /* Keep everything aligned to the top */
 .container {
     width: 100%;
-    padding-top: 10px;   /* small space from top */
+    padding-top: 10px;
+    /* small space from top */
     text-align: center;
 }
 
-.analysis1{
+.analysis1 {
     width: 490px;
     height: 450px;
     background-color: #CECECE;
     /* margin-left: 10px; */
     border-radius: 5px;
     justify-content: center;
-    text-align: center;  
+    text-align: center;
     align-items: center;
 }
 
-.analysis{
+.analysis {
     width: 365px;
     height: 365px;
     background-color: white;
@@ -31,28 +32,29 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;  
+    text-align: center;
     align-items: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s;
 }
+
 .analysis:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
-.analysis2{
+.analysis2 {
     width: 1490px;
     height: 450px;
     background-color: #CECECE;
     /* margin-left: 10px; */
     border-radius: 5px;
-    
+
 }
 
-.dashboardr1{
-    display:flex;
-    gap:10px;
+.dashboardr1 {
+    display: flex;
+    gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
 }
@@ -63,15 +65,16 @@ h1 {
     font-size: 32px;
 }
 
-h2{
+h2 {
     color: #333;
     margin-bottom: 30px;
     font-size: 32px;
     text-align: center;
 
 }
-h3{
-    margin-left:10px;
+
+h3 {
+    margin-left: 10px;
 
 }
 
@@ -90,41 +93,51 @@ h3{
     text-align: center;
     margin-bottom: 40px;
 }
+
 .hero-overlay {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.4);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
 }
+
 .hero-content {
     position: relative;
     z-index: 1;
 }
+
 .hero-content h1 {
     color: white;
     font-size: 48px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin-bottom: 10px;
 }
+
 .hero-content p {
     font-size: 20px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     margin: 0;
 }
 
 /* Nav & Action Grids */
-.nav-grid, .action-grid {
+.nav-grid,
+.action-grid {
     display: flex;
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
     margin-bottom: 40px;
 }
-.nav-card, .action-card {
+
+.nav-card,
+.action-card {
     background: white;
     width: 150px;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-decoration: none;
     color: #333;
     display: flex;
@@ -132,46 +145,54 @@ h3{
     align-items: center;
     transition: transform 0.2s, box-shadow 0.2s;
 }
-.nav-card:hover, .action-card:hover {
+
+.nav-card:hover,
+.action-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
-.nav-icon, .action-icon {
+
+.nav-icon,
+.action-icon {
     width: 64px;
     height: 64px;
     margin-bottom: 15px;
     object-fit: contain;
 }
-.nav-card span, .action-card span {
+
+.nav-card span,
+.action-card span {
     font-weight: bold;
     font-size: 16px;
     text-align: center;
 }
 
-.dailytrans
-{
+.dailytrans {
     width: 220px;
     height: 220px;
-    background-color: #2ecc71; /* green */
-    color: #ffffff;            /* white text */
-    border-radius: 50%;        /* circle */
+    background-color: #2ecc71;
+    /* green */
+    color: #ffffff;
+    /* white text */
+    border-radius: 50%;
+    /* circle */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 32px;
     font-weight: bold;
-    margin-left: 70px;
-    margin-top: 30px;
+    margin-left: 10px;
+    margin-top: 0px;
 }
 
-.analysismnth{
+.analysismnth {
     width: 365px;
     height: 365px;
     background-color: white;
     /* margin-left: 10px; */
     border-radius: 5px;
     justify-content: center;
-    text-align: center;  
+    text-align: center;
     align-items: center;
 }
 
@@ -182,13 +203,15 @@ h3{
     margin-top: 30px;
 }
 
-.mnttrans
-{
+.mnttrans {
     width: 220px;
     height: 220px;
-    background-color: #2ecc71; /* green */
-    color: #ffffff;            /* white text */
-    border-radius: 50%;        /* circle */
+    background-color: #2ecc71;
+    /* green */
+    color: #ffffff;
+    /* white text */
+    border-radius: 50%;
+    /* circle */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -197,9 +220,3 @@ h3{
     margin-left: 17px;
     margin-top: 30px;
 }
-
-
-
-
-
-
